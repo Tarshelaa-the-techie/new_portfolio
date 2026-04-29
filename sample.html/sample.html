@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tarshelaa Mary | Kinetic Blueprint</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= THEME ================= */
+:root {
+    --bg: #0F172A;
+    --primary: #2DD4BF;
+    --secondary: #F472B6;
+    --text: #F8FAFC;
+}
+
+body.light {
+    --bg: #F8FAFC;
+    --text: #0F172A;
+}
+
+/* ================= GLOBAL ================= */
+body {
+    margin:0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition:0.4s;
+}
+
+section { padding: 80px 10%; }
+
+/* ================= NAV ================= */
+nav {
+    display:flex;
+    justify-content:space-between;
+    padding:20px 10%;
+}
+
+.toggle {
+    cursor:pointer;
+}
+
+/* ================= HERO ================= */
+.hero {
+    display:flex;
+    min-height:100vh;
+}
+
+.hero-left {
+    flex:1;
+}
+
+.hero-left img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.hero-right {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:60px;
+}
+
+.hero-right h1 {
+    font-size:3rem;
+}
+
+.hero-right p {
+    font-size:1.2rem;
+    color:var(--primary);
+}
+
+/* ================= TIMELINE ================= */
+.timeline {
+    border-left:3px solid var(--primary);
+    padding-left:20px;
+}
+
+.timeline-item {
+    margin-bottom:40px;
+}
+
+/* ================= SKILLS ================= */
+.skills {
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.skill {
+    padding:10px 20px;
+    border-radius:30px;
+    border:2px solid var(--primary);
+}
+
+.learning {
+    border-style:dashed;
+}
+
+/* ================= PROJECTS ================= */
+.project {
+    background:#111;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:10px;
+}
+
+.project h3 { color:var(--secondary); }
+
+/* ================= NOW ================= */
+.now {
+    font-style:italic;
+    color:var(--primary);
+}
+
+/* ================= BUTTON ================= */
+button {
+    padding:10px 20px;
+    border:none;
+    background:var(--primary);
+    color:#000;
+    cursor:pointer;
+    border-radius:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h2>Tarshelaa Mary</h2>
+    <div>
+        <button onclick="toggleMode()">🌙</button>
+        <button onclick="toggleResume()">Anti-Resume</button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-left">
+        <!-- YOUR IMAGE UNCHANGED -->
+        <img src="https://z-cdn-media.chatglm.cn/files/e6057128-9afc-42f0-b075-e1430cf52bca.jpeg?auth_key=1876527144-1b31793217cb40adb5ba431c548df131-0-94c64964d64451dd2b64d2667089a1e6">
+    </div>
+    <div class="hero-right">
+        <h1>Tarshelaa Mary</h1>
+        <p>I build systems, design experiences, and think like a developer.</p>
+        <button onclick="playVoice()">▶ Play Intro</button>
+    </div>
+</section>
+
+<!-- TIMELINE -->
+<section>
+<h2>Growth Timeline</h2>
+<div class="timeline">
+    <div class="timeline-item">
+        <h3>Foundation</h3>
+        <p>Learned C, C++ basics and logic building.</p>
+    </div>
+    <div class="timeline-item">
+        <h3>Application</h3>
+        <p>Built real UI projects using HTML & CSS.</p>
+    </div>
+    <div class="timeline-item">
+        <h3>Future</h3>
+        <p>Exploring advanced frontend & AI integration.</p>
+    </div>
+</div>
+</section>
+
+<!-- SKILLS -->
+<section>
+<h2>Tech Stack</h2>
+<div class="skills">
+    <div class="skill">HTML</div>
+    <div class="skill">CSS</div>
+    <div class="skill">C</div>
+    <div class="skill">C++</div>
+    <div class="skill">Python</div>
+    <div class="skill learning">AI Learning</div>
+</div>
+</section>
+
+<!-- PROJECTS -->
+<section>
+<h2>Projects</h2>
+
+<div class="project">
+<h3>LumiPaw</h3>
+<p><b>Problem:</b> Pet safety in dark</p>
+<p><b>Pivot:</b> Redesigned UI twice</p>
+<p><b>Result:</b> Clean landing page</p>
+</div>
+
+<div class="project">
+<h3>Luminatech</h3>
+<p><b>Problem:</b> Complex UI</p>
+<p><b>Pivot:</b> Simplified UX</p>
+<p><b>Result:</b> Futuristic design</p>
+</div>
+
+</section>
+
+<!-- NOW -->
+<section>
+<h2>Now</h2>
+<p class="now">Currently learning UI animations & exploring AI tools.</p>
+</section>
+
+<!-- CONTACT -->
+<section>
+<h2>Contact</h2>
+<p>tarshelaa.techie@gmail.com</p>
+</section>
+
+<script>
+
+/* DARK MODE */
+function toggleMode(){
+    document.body.classList.toggle("light");
+}
+
+/* ANTI RESUME */
+function toggleResume(){
+    alert("Mistake: I used to focus only on design, now I focus on UX too.");
+}
+
+/* VOICE INTRO */
+function playVoice(){
+    const audio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+    audio.play();
+}
+
+</script>
+
+</body>
+</html>

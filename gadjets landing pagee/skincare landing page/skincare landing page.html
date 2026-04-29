@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumière Glaze | Luxe Skincare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. THEME & VARIABLES --- */
+        :root {
+            --bg-color: #ffffff;
+            --primary: #9b59b6; /* Medium Purple */
+            --deep-purple: #4a148c; /* Deep Grape */
+            --soft-pink: #f3e5f5;
+            --accent-pink: #ff80ab;
+            --glass: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --neon-glow: 0 0 15px rgba(155, 89, 182, 0.5);
+            --text-dark: #2d1b2e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* --- 2. DYNAMIC BACKGROUND LAYERS --- */
+        
+        /* Mouse Spotlight Gradient (Fixed behind content) */
+        #spotlight {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle 600px at var(--x, 50%) var(--y, 50%), rgba(230, 230, 250, 0.4), transparent 40%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Bubbles Container */
+        .bubbles-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Bubble Animation */
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(155, 89, 182, 0.1) 100%);
+            border-radius: 50%;
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.8);
+            animation: rise 15s infinite ease-in;
+            opacity: 0.6;
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+        }
+
+        /* --- 3. UI COMPONENTS --- */
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.5);
+            transition: all 0.3s;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--deep-purple);
+            text-decoration: none;
+            text-shadow: 2px 2px 0px rgba(255, 128, 171, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i { animation: spin 10s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .nav-links a {
+            margin: 0 20px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            background: var(--primary); bottom: -5px; left: 0; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .shop-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary), var(--deep-purple));
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(74, 20, 140, 0.3);
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shop-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(74, 20, 140, 0.5);
+        }
+        
+        /* Shine effect on button hover */
+        .shop-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        .shop-btn:hover::before { left: 100%; }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 8% 50px;
+            position: relative;
+        }
+
+        .hero-content {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            background: linear-gradient(to right, var(--deep-purple), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: floatText 6s ease-in-out infinite;
+        }
+
+        @keyframes floatText {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 3D Floating Image Frame */
+        .glass-frame {
+            width: 400px; height: 500px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid white;
+            border-radius: 20px;
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.1), -20px -20px 60px rgba(255,255,255,0.8);
+            overflow: hidden;
+            position: relative;
+            transform: perspective(1000px) rotateY(-15deg) rotateX(5deg);
+            transition: transform 0.5s ease;
+            animation: heroFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) translateY(0); }
+            50% { transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) translateY(-20px); }
+        }
+
+        .glass-frame img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        /* Glowing Orbs behind Hero */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 1;
+            opacity: 0.6;
+        }
+        .orb-1 { width: 300px; height: 300px; background: var(--primary); top: 10%; right: 10%; animation: pulse 4s infinite; }
+        .orb-2 { width: 200px; height: 200px; background: var(--accent-pink); bottom: 10%; left: 10%; animation: pulse 5s infinite reverse; }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 0.4; } }
+
+        /* --- 4. INTERACTIVE TRIANGULAR FEATURES (3D TILT) --- */
+        .features-section {
+            padding: 100px 8%;
+            text-align: center;
+        }
+
+        .tri-grid {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            perspective: 1000px;
+        }
+
+        .tilt-card {
+            width: 220px;
+            height: 240px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            cursor: pointer;
+        }
+
+        .tri-shape {
+            width: 100%; height: 100%;
+            background: linear-gradient(145deg, #ffffff, #f3e5f5);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            display: flex; justify-content: center; align-items: flex-end;
+            padding-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(155, 89, 182, 0.3);
+            transition: all 0.1s ease-out; /* Fast for JS tilt */
+        }
+        
+        .tilt-card:nth-child(even) .tri-shape {
+            clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+            align-items: flex-start;
+            padding-top: 40px;
+            margin-top: 50px;
+        }
+
+        .tilt-card:hover .tri-shape {
+            background: linear-gradient(145deg, var(--primary), var(--deep-purple));
+        }
+        
+        .tilt-card:hover .tri-content, .tilt-card:hover .tri-icon {
+            color: white;
+            transform: translateZ(30px); /* Pop out effect */
+        }
+
+        .tri-icon { font-size: 2rem; color: var(--primary); margin-bottom: 10px; transition: 0.3s; }
+        .tri-content h3 { font-family: 'Playfair Display'; font-size: 1.2rem; }
+
+        /* --- 5. PRODUCT CARDS WITH HOVER GLOW --- */
+        .products-section { padding: 100px 8%; background: rgba(243, 229, 245, 0.3); }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .p-card {
+            background: white;
+            border-radius: 25px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .p-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 25px;
+            background: linear-gradient(135deg, transparent 40%, rgba(155, 89, 182, 0.1) 100%);
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .p-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(74, 20, 140, 0.2);
+            border-color: var(--primary);
+        }
+        
+        .p-card:hover::before { opacity: 1; }
+
+        .p-img {
+            height: 280px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .p-img img { max-height: 90%; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); transition: 0.4s; }
+        .p-card:hover .p-img img { transform: scale(1.1) rotate(5deg); }
+
+        .add-btn {
+            padding: 10px 35px;
+            border: 2px solid var(--deep-purple);
+            background: transparent;
+            color: var(--deep-purple);
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-btn:hover {
+            background: var(--deep-purple);
+            color: white;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        /* --- 6. SPARKLE CURSOR --- */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            width: 6px; height: 6px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+            animation: sparkleAnim 1s linear forwards;
+            z-index: 9999;
+        }
+        @keyframes sparkleAnim {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* --- 7. HEART CONFETTI (Explosion) --- */
+        .confetti {
+            position: absolute;
+            width: 10px; height: 10px;
+            background: var(--accent-pink);
+            clip-path: polygon(50% 0%, 100% 35%, 82% 100%, 50% 75%, 18% 100%, 0% 35%);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* --- 8. TOAST --- */
+        #toast {
+            visibility: hidden;
+            min-width: 300px;
+            background: linear-gradient(90deg, #fff, #f3e5f5);
+            color: var(--deep-purple);
+            text-align: center;
+            border-radius: 50px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%) translateY(50px);
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid var(--primary);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        #toast.show {
+            visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Mouse Spotlight -->
+    <div id="spotlight"></div>
+    
+    <!-- Floating Bubbles Background -->
+    <div class="bubbles-container" id="bubbles"></div>
+
+    <nav>
+        <a href="#" class="logo"><i class="fas fa-sparkles"></i> Lumière</a>
+        <div class="nav-links">
+            <a href="#hero">Home</a>
+            <a href="#features">Ritual</a>
+            <a href="#products">Collection</a>
+        </div>
+        <a href="#products" class="shop-btn">Shop Now</a>
+    </nav>
+
+    <header class="hero" id="hero">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+
+        <div class="hero-content">
+            <h1>Unveil Your <br> Radiance.</h1>
+            <p>A skincare experience wrapped in light. Formulas infused with diamond dust and lavender essence for a glow that never fades.</p>
+            <a href="#products" class="shop-btn" style="padding: 15px 45px; font-size: 1.1rem;">Start the Ritual</a>
+        </div>
+
+        <div class="hero-image">
+            <div class="glass-frame">
+                <!-- Picsum seed for specific aesthetic -->
+                <img src="https://picsum.photos/seed/glowyskin/400/600" alt="Glowing Skin">
+            </div>
+        </div>
+    </header>
+
+    <!-- Features with 3D Tilt -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <h2 style="font-family: 'Playfair Display'; font-size: 3rem; color: var(--deep-purple); margin-bottom: 50px;">The Holy Trinity</h2>
+        </div>
+        <div class="tri-grid">
+            <div class="tilt-card" data-tilt>
+                <div class="tri-shape">
+                    <div class="tri-content">
+                        <i class="fas fa-water tri-icon"></i>
+                        <h3>Deep Hydrate</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="tilt-card" data-tilt>
+                <div class="tri-shape">
+                    <div class="tri-content">
+                        <i class="fas fa-star tri-icon"></i>
+                        <h3>Brighten</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="tilt-card" data-tilt>
+                <div class="tri-shape">
+                    <div class="tri-content">
+                        <i class="fas fa-heart tri-icon"></i>
+                        <h3>Plump</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products-section" id="products">
+        <div class="product-grid">
+            <div class="p-card">
+                <div class="p-img"><img src="https://picsum.photos/seed/serum2/300/300" alt="Serum"></div>
+                <h3 style="font-family: 'Playfair Display';">Luminous Serum</h3>
+                <p style="color:#777; margin: 10px 0;">Liquid Gold for your face.</p>
+                <h4 style="color:var(--primary); font-weight:bold;">$58.00</h4>
+                <button class="add-btn" onclick="addToCart(event, this)">Add to Bag</button>
+            </div>
+            <div class="p-card">
+                <div class="p-img"><img src="https://picsum.photos/seed/cream2/300/300" alt="Cream"></div>
+                <h3 style="font-family: 'Playfair Display';">Velvet Night Cream</h3>
+                <p style="color:#777; margin: 10px 0;">Wake up soft as silk.</p>
+                <h4 style="color:var(--primary); font-weight:bold;">$64.00</h4>
+                <button class="add-btn" onclick="addToCart(event, this)">Add to Bag</button>
+            </div>
+            <div class="p-card">
+                <div class="p-img"><img src="https://picsum.photos/seed/oil2/300/300" alt="Oil"></div>
+                <h3 style="font-family: 'Playfair Display';">Lavender Essence</h3>
+                <p style="color:#777; margin: 10px 0;">Calming botanical oil.</p>
+                <h4 style="color:var(--primary); font-weight:bold;">$42.00</h4>
+                <button class="add-btn" onclick="addToCart(event, this)">Add to Bag</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast -->
+    <div id="toast"><i class="fas fa-heart"></i> Added to your beauty bag!</div>
+
+    <script>
+        // --- 1. BUBBLES GENERATOR ---
+        const bubbleContainer = document.getElementById('bubbles');
+        const bubbleCount = 20;
+
+        for (let i = 0; i < bubbleCount; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            
+            // Randomize size, position, and animation duration
+            const size = Math.random() * 60 + 20 + 'px';
+            bubble.style.width = size;
+            bubble.style.height = size;
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            bubble.style.animationDelay = (Math.random() * 5) + 's';
+            
+            bubbleContainer.appendChild(bubble);
+        }
+
+        // --- 2. MOUSE SPOTLIGHT EFFECT ---
+        const spotlight = document.getElementById('spotlight');
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            spotlight.style.setProperty('--x', x + 'px');
+            spotlight.style.setProperty('--y', y + 'px');
+            
+            // Trigger sparkle trail (throttled for performance)
+            if(Math.random() > 0.9) createSparkle(x, y);
+        });
+
+        // --- 3. SPARKLE CURSOR ---
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            document.body.appendChild(sparkle);
+            
+            // Random offset
+            const size = Math.random() * 10 + 5;
+            sparkle.style.width = size + 'px';
+            sparkle.style.height = size + 'px';
+            sparkle.style.left = (x + (Math.random() * 20 - 10)) + 'px';
+            sparkle.style.top = (y + (Math.random() * 20 - 10)) + 'px';
+            
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+
+        // --- 4. 3D TILT EFFECT FOR TRIANGLES ---
+        const cards = document.querySelectorAll('.tilt-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Calculate rotation based on cursor position
+                const xPct = x / rect.width;
+                const yPct = y / rect.height;
+                
+                const rotateX = (0.5 - yPct) * 40; // Tilt up/down
+                const rotateY = (xPct - 0.5) * 40; // Tilt left/right
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.1)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+            });
+        });
+
+        // --- 5. CONFETTI EXPLOSION ON CLICK ---
+        function addToCart(e, btn) {
+            showToast();
+            createConfetti(e.clientX, e.clientY);
+            
+            // Button bounce effect
+            btn.style.transform = 'scale(0.9)';
+            setTimeout(() => btn.style.transform = 'scale(1)', 150);
+        }
+
+        function createConfetti(x, y) {
+            const particleCount = 30;
+            const colors = ['#ff80ab', '#9b59b6', '#f3e5f5', '#ffffff'];
+
+            for (let i = 0; i < particleCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                document.body.appendChild(confetti);
+
+                // Randomize direction
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 100 + 50;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                confetti.style.left = x + 'px';
+                confetti.style.top = y + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                // Animate
+                const anim = confetti.animate([
+                    { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                    { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 800,
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                });
+
+                anim.onfinish = () => confetti.remove();
+            }
+        }
+
+        // --- 6. TOAST NOTIFICATION ---
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+    </script>
+</body>
+</html>

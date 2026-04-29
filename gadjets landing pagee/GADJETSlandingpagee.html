@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Gadgetry | Future Tech</title>
+    <!-- Importing Google Fonts for that Tech/Neon look -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --bg-color: #05050a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-blue: #00f3ff;
+            --neon-pink: #bc13fe;
+            --neon-yellow: #f2ff00;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- BACKGROUND ANIMATION (The Glittered Sun & Stars) --- */
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%);
+        }
+
+        /* --- UI COMPONENTS --- */
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(5, 5, 10, 0.8);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .logo span {
+            color: var(--neon-pink);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue);
+        }
+
+        .cart-btn {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--neon-pink);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--neon-pink);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--text-main), var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glowText 3s infinite alternate;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: transparent;
+            color: var(--neon-blue);
+            border: 2px solid var(--neon-blue);
+            font-family: var(--font-display);
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .cta-btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 30px var(--neon-blue);
+        }
+
+        /* --- SECTION STYLES --- */
+        section {
+            padding: 80px 10%;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60%;
+            height: 3px;
+            background: var(--neon-pink);
+            margin: 10px auto 0;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* Square Feature Boxes (Grid) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-box {
+            aspect-ratio: 1 / 1; /* Makes them perfectly square */
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3), inset 0 0 10px rgba(0, 243, 255, 0.1);
+        }
+
+        .feature-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .feature-box:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 15px var(--neon-yellow);
+        }
+
+        .feature-box h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-box p {
+            color: var(--text-muted);
+        }
+
+        /* Product Showcase */
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .product-card {
+            width: 300px;
+            background: rgba(20, 20, 25, 0.6);
+            border: 1px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-details {
+            padding: 20px;
+        }
+
+        .product-details h3 {
+            font-family: var(--font-display);
+            margin-bottom: 5px;
+            color: var(--text-main);
+        }
+
+        .price {
+            color: var(--neon-blue);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid var(--neon-pink);
+            color: var(--neon-pink);
+            font-family: var(--font-body);
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            background: var(--neon-pink);
+            color: #fff;
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        /* Interactive Configurator */
+        .configurator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .config-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .config-display {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gadget-preview {
+            width: 300px;
+            height: 300px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px var(--neon-blue));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .config-controls {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-label {
+            display: block;
+            margin-bottom: 10px;
+            font-family: var(--font-display);
+            color: var(--neon-blue);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .color-opt {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #fff;
+            transition: transform 0.2s;
+        }
+
+        .color-opt.active {
+            transform: scale(1.3);
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .range-slider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 5px;
+            background: #333;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-yellow);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--neon-yellow);
+        }
+
+        .total-price-display {
+            font-size: 2rem;
+            font-family: var(--font-display);
+            color: var(--text-main);
+            margin-top: 20px;
+            text-shadow: 0 0 10px var(--neon-yellow);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 40px 10%;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+
+        .social-icons {
+            margin-bottom: 20px;
+        }
+
+        .social-icons a {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--neon-blue);
+            color: #000;
+            text-align: center;
+            border-radius: 5px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            right: 30px;
+            bottom: 30px;
+            font-family: var(--font-display);
+            font-weight: bold;
+            box-shadow: 0 0 20px var(--neon-blue);
+            transform: translateY(100px);
+            transition: transform 0.3s, visibility 0.3s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes glowText {
+            0% { text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+            100% { text-shadow: 0 0 20px rgba(188, 19, 254, 0.8), 0 0 40px rgba(0, 243, 255, 0.6); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; } /* Simplified for mobile demo */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas for Star/Particle Animation -->
+    <canvas id="star-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Lumina<span>Tech</span></div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#products">Products</a>
+            <a href="#customize">Lab</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="cart-btn" onclick="showToast('Cart feature coming soon!')">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>THE FUTURE IS<br>BRIGHT & NEON</h1>
+            <p>Experience the next generation of gadgets. Glittering like the sun in the dark, designed for the bold.</p>
+            <a href="#products" class="cta-btn">Explore Gadgets</a>
+        </div>
+    </header>
+
+    <!-- Square Features Boxes -->
+    <section id="features">
+        <h2 class="section-title">Core Features</h2>
+        <div class="features-grid">
+            <div class="feature-box">
+                <i class="fas fa-microchip feature-icon"></i>
+                <h3>Quantum Core</h3>
+                <p>Processing power that defies physics.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-wifi feature-icon"></i>
+                <h3>Neural Link</h3>
+                <p>Instant connectivity with your mind.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-bolt feature-icon"></i>
+                <h3>Solar Glint</h3>
+                <p>Batteries that shine as they charge.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-shield-alt feature-icon"></i>
+                <h3>Cyber Shield</h3>
+                <p>Impenetrable encryption standards.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Showcase -->
+    <section id="products">
+        <h2 class="section-title">Latest Arrivals</h2>
+        <div class="product-container">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <!-- Picsum seed 'tech1' for consistent tech-like abstract image -->
+                    <img src="https://picsum.photos/seed/tech1/300/250" alt="Cyber Headset">
+                </div>
+                <div class="product-details">
+                    <h3>Neon Visor X1</h3>
+                    <span class="price">$299.00</span>
+                    <button class="add-btn" onclick="addToCart('Neon Visor X1')">ADD TO CART</button>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <!-- Picsum seed 'tech2' -->
+                    <img src="https://picsum.photos/seed/tech2/300/250" alt="Smart Watch">
+                </div>
+                <div class="product-details">
+                    <h3>Flux Capacitor Watch</h3>
+                    <span class="price">$150.00</span>
+                    <button class="add-btn" onclick="addToCart('Flux Capacitor Watch')">ADD TO CART</button>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <!-- Picsum seed 'tech3' -->
+                    <img src="https://picsum.photos/seed/tech3/300/250" alt="Drone">
+                </div>
+                <div class="product-details">
+                    <h3>Sky Glider Drone</h3>
+                    <span class="price">$450.00</span>
+                    <button class="add-btn" onclick="addToCart('Sky Glider Drone')">ADD TO CART</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Customizer -->
+    <section id="customize">
+        <h2 class="section-title">Gadget Lab</h2>
+        <div class="configurator">
+            <div class="config-layout">
+                <div class="config-display">
+                    <!-- Using a generic icon to represent the gadget, avoiding external dependency issues -->
+                    <i class="fas fa-gamepad gadget-preview" id="gadgetIcon"></i>
+                </div>
+                <div class="config-controls">
+                    <div class="control-group">
+                        <label class="control-label">Select Finish</label>
+                        <div class="color-options">
+                            <div class="color-opt active" style="background-color: #00f3ff;" onclick="changeColor('#00f3ff', this)"></div>
+                            <div class="color-opt" style="background-color: #bc13fe;" onclick="changeColor('#bc13fe', this)"></div>
+                            <div class="color-opt" style="background-color: #f2ff00;" onclick="changeColor('#f2ff00', this)"></div>
+                            <div class="color-opt" style="background-color: #ffffff;" onclick="changeColor('#ffffff', this)"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label class="control-label">Performance Level: <span id="perfValue">50%</span></label>
+                        <input type="range" min="0" max="100" value="50" class="range-slider" oninput="updatePerf(this.value)">
+                    </div>
+
+                    <div class="total-price-display" id="totalPrice">$299.00</div>
+                    <button class="cta-btn" style="width: 100%; margin-top: 20px;" onclick="showToast('Custom Build Added!')">Order Custom Build</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+        </div>
+        <p>&copy; 2023 Lumina Tech. Designed in the Neon Future.</p>
+    </footer>
+
+    <!-- Toast Notification Element -->
+    <div id="toast">Item added to cart!</div>
+
+    <script>
+        /* --- 1. FALLING STARS / GLITTER ANIMATION --- */
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let stars = [];
+        const numStars = 150;
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        class Star {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * height; // Start randomly on screen
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = -10;
+                this.size = Math.random() * 2 + 0.5; // Small stars
+                this.speed = Math.random() * 1 + 0.2; // Falling speed
+                this.opacity = Math.random();
+                this.fade = Math.random() * 0.02 + 0.005;
+                this.color = Math.random() > 0.8 ? '#bc13fe' : (Math.random() > 0.5 ? '#00f3ff' : '#ffffff');
+            }
+
+            update() {
+                this.y += this.speed;
+                this.opacity += this.fade;
+
+                if (this.opacity > 1 || this.opacity < 0) {
+                    this.fade = -this.fade;
+                }
+
+                if (this.y > height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = Math.abs(this.opacity);
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Add "glitter" glow effect
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = this.color;
+            }
+        }
+
+        function initStars() {
+            resize();
+            for (let i = 0; i < numStars; i++) {
+                stars.push(new Star());
+            }
+            animateStars();
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, width, height);
+            // Reset shadow for performance
+            ctx.shadowBlur = 0;
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            requestAnimationFrame(animateStars);
+        }
+
+        window.addEventListener('resize', resize);
+        window.onload = initStars;
+
+        /* --- 2. INTERACTION LOGIC --- */
+
+        // Toast Notification System (No alerts)
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        // Cart Logic
+        let cartTotal = 0;
+        function addToCart(itemName) {
+            cartTotal++;
+            document.querySelector('.cart-count').textContent = cartTotal;
+            
+            // Visual feedback on button
+            showToast(`Added ${itemName} to your neon stash!`);
+        }
+
+        // Customizer Logic
+        let basePrice = 299;
+        
+        function changeColor(color, element) {
+            // Update Icon Color
+            const icon = document.getElementById('gadgetIcon');
+            icon.style.color = color;
+            icon.style.filter = `drop-shadow(0 0 20px ${color})`;
+
+            // Update Active UI State
+            document.querySelectorAll('.color-opt').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+
+            updatePrice();
+        }
+
+        function updatePerf(val) {
+            document.getElementById('perfValue').textContent = val + "%";
+            updatePrice();
+        }
+
+        function updatePrice() {
+            const sliderVal = parseInt(document.getElementById('perfValue').textContent);
+            const multiplier = 1 + (sliderVal / 50); // Simple math: 100% = 3x price
+            const newPrice = (basePrice * multiplier).toFixed(2);
+            document.getElementById('totalPrice').textContent = "$" + newPrice;
+        }
+
+        /* --- 3. SCROLL ANIMATIONS --- */
+        // Simple IntersectionObserver to trigger animations when elements scroll into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Apply fade-in animation to sections
+        document.querySelectorAll('section').forEach(sec => {
+            sec.style.opacity = 0;
+            sec.style.transform = 'translateY(30px)';
+            sec.style.transition = 'all 0.8s ease-out';
+            observer.observe(sec);
+        });
+
+    </script>
+</body>
+</html>
